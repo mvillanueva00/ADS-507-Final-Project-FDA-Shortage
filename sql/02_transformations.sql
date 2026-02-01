@@ -14,14 +14,14 @@ USE fda_shortage_db;
 
 DROP TABLE IF EXISTS shortages_with_ndc;
 
---create table with columns from shortages and ndc tables
+-- create table with columns from shortages and ndc tables
 CREATE TABLE shortages_with_ndc (
   shortage_id BIGINT,
   package_ndc VARCHAR(30),
   shortage_generic_name TEXT,
   company_name VARCHAR(255),
   status VARCHAR(50),
-  therapeutic_category VARCHAR(100),
+  therapeutic_category TEXT,
   initial_posting_date VARCHAR(20),
   update_date VARCHAR(20),
   shortage_dosage_form VARCHAR(100),
@@ -32,8 +32,8 @@ CREATE TABLE shortages_with_ndc (
   package_marketing_start_date VARCHAR(20),
 
   ndc_generic_name TEXT,
-  manufacturer VARCHAR(255),
-  brand_name VARCHAR(255),
+  manufacturer TEXT,
+  brand_name TEXT,
   finished BOOLEAN,
   marketing_category VARCHAR(100),
   ndc_dosage_form VARCHAR(100),
@@ -42,7 +42,7 @@ CREATE TABLE shortages_with_ndc (
   application_number VARCHAR(50)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---Insert joined data into the new table
+-- Insert joined data into the new table
 INSERT INTO shortages_with_ndc
 SELECT 
     -- Generate row ID
