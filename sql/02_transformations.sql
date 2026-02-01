@@ -24,7 +24,7 @@ CREATE TABLE shortages_with_ndc (
   therapeutic_category TEXT,
   initial_posting_date VARCHAR(20),
   update_date VARCHAR(20),
-  shortage_dosage_form VARCHAR(100),
+  shortage_dosage_form TEXT,
   reason TEXT,
 
   product_ndc VARCHAR(20),
@@ -36,7 +36,7 @@ CREATE TABLE shortages_with_ndc (
   brand_name TEXT,
   finished BOOLEAN,
   marketing_category VARCHAR(100),
-  ndc_dosage_form VARCHAR(100),
+  ndc_dosage_form TEXT,
   route TEXT,
   product_type VARCHAR(100),
   application_number VARCHAR(50)
