@@ -19,13 +19,13 @@ DROP TABLE IF EXISTS raw_ndc;
 CREATE TABLE raw_ndc (
     product_ndc VARCHAR(20) PRIMARY KEY,
     generic_name TEXT,
-    labeler_name VARCHAR(255),
-    brand_name VARCHAR(255),
-    finished BOOLEAN,
+    labeler_name TEXT,
+    brand_name LONGTEXT,
+    finished TINYINT(1),
     marketing_category VARCHAR(100),
-    dosage_form VARCHAR(100),
+    dosage_form TEXT,
     route TEXT,
-    product_type VARCHAR(100),
+    product_type VARCHAR(150),
     marketing_start_date VARCHAR(20),
     application_number VARCHAR(50),
     INDEX idx_labeler (labeler_name),
@@ -61,12 +61,15 @@ CREATE TABLE raw_drug_shortages (
     therapeutic_category VARCHAR(100),
     initial_posting_date VARCHAR(20),
     update_date VARCHAR(20),
-    dosage_form VARCHAR(100),
+    dosage_form TEXT,
     reason TEXT,
     INDEX idx_package_ndc (package_ndc),
     INDEX idx_status (status),
     INDEX idx_company (company_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE raw_drug_shortages
+ADD UNIQUE KEY uq_package_ndc (package_ndc);
 
 -- ============================================
 -- Table 4: Shortage Contact Information
