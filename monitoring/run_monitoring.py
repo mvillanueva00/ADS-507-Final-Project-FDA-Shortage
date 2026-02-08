@@ -100,7 +100,7 @@ def run_sql_file(conn, file_path: str) -> tuple[list[str], bool]:
 
 
     if not p.exists():
-        lines.append(f"[FAIL] Missing SQL file: {file_path}")
+        lines.append(f"**FAIL:** Missing SQL file: {file_path}")
         return lines, True
 
     sql_text = p.read_text(encoding="utf-8")
@@ -128,9 +128,9 @@ def run_sql_file(conn, file_path: str) -> tuple[list[str], bool]:
                 lines.append(" Executed (no rows returned).")
         except Exception as e:
             lines.append(f"**FAIL:** {type(e).__name__}: {e}")
-            failed = True
+            had_failure = True
 
-    return lines, failed
+    return lines, had_failure
 
 
 def add_readable_summary(conn) -> list[str]:
