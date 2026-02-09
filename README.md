@@ -36,8 +36,6 @@ ADS-507-Final-Team-Project/
 ```
 ---
 ![Repository Structure](docs/repo_structure.png)
-## Run the pipeline (one click)
-[![Run Pipeline](https://img.shields.io/badge/GitHub%20Actions-Run%20Pipeline-blue)](https://github.com/ngwalker93/ADS-507-Final-Team-Project/actions/workflows/pipeline_monitoring.yml)
 
 ---
 
@@ -66,6 +64,7 @@ git clone https://github.com/ngwalker93/ADS-507-Final-Team-Project.git
 cd ADS-507-Final-Team-Project
 ```
 ## Step 2: Create and Activate Virtual Environment
+
 ### Create venv
 ```powershell
 python -m venv .venv
@@ -94,11 +93,12 @@ mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS fda_shortage_db;"
 ```
 
 ### Phase 2: Create Database Tables
+
 ```powershell
-Get-Content .\sql\01_create_tables.sql | mysql -u root -p fda_shortage_db;"
+Get-Content .\sql\01_create_tables.sql | mysql -u root -p fda_shortage_db
 ```
 
-**Expected output:
+*Expected output:
 Creates 4 raw tables:raw_ndc, raw_ndc_packaging, raw_drug_shortages,shortage_contacts*
 
 ### Phase 3: Download Raw FDA Data
@@ -108,7 +108,7 @@ python .\scripts\download_data.py
 
 ```
 
-**Expected output:
+*Expected output:
 Downloads FDA NDC dataset (~119 MB),Downloads FDA Drug Shortages dataset,Stores raw files in data*
 
 **Expected output files:*
@@ -136,7 +136,7 @@ data/shortage_contacts.csv**
 python scripts/load_to_mysql.py
 ```
 
-**Expected output
+*Expected output
 Loads CSVs into MySQL tables,Clears existing rows safely,Verifies row counts after load*
 
 ### Phase 6: Run SQL Transformations
@@ -145,24 +145,26 @@ Get-Content .\sql\02_transformations.sql | mysql -u root -p fda_shortage_db
 
 ```
 
-**Expected output:
+*Expected output:
 Joins shortages with NDC data,Creates enriched views for analysis,current_package_shortages,multi_package_shortages, manufacturer_risk_analysis,current_manufacturer_risk*
 
 ### Phase 7:Run monitoring checks
+
 ```powershell
 python .\monitoring\run_monitoring.py
 
 ```
-**Expected result:** a report file created in folder:
-
+**Expected result:** Running this script generates monitoring reports and saves them to the `monitoring/reports/` folder.
+* `monitoring/reports/monitoring_report.md`  
 * `monitoring/reports/monitoring_report.txt`
+  
 ### Phase 8:Run the Streamlit dashboard (local)
 
 ### Set DB environment variables (PowerShell)
 
 ```powershell
 $env:DB_USER="root"
-$env:DB_PASSWORD="YOUR_MYSQL_PASSWORD"
+$env:DB_PASSWORD="**YOUR_MYSQL_PASSWORD**"
 $env:DB_HOST="127.0.0.1"
 $env:DB_PORT="3306"
 $env:DB_NAME="fda_shortage_db"
@@ -175,6 +177,38 @@ python -m streamlit run dashboard/app.py
 
 ```
 -----
+# **Automated Pipeline Execution and Monitoring via GitHub Actions**
+
+ This project uses GitHub Actions to run the full ETL pipeline and generate monitoring reports automatically.
+
+### Step 1: Trigger the Pipeline
+
+- Go to the GitHub repository
+- Click the Actions tab [![Run Pipeline](https://img.shields.io/badge/GitHub%20Actions-Run%20Pipeline-blue)](https://github.com/ngwalker93/ADS-507-Final-Team-Project/actions/workflows/pipeline_monitoring.yml)
+- Select **Pipeline Monitoring**
+- Click **Run workflow**
+- Keep all default options and click **Run workflow**
+
+  This triggers raw data ingestion, data processing, loading into MySQL, SQL transformation and monitoring checks in one click.
+
+  ### Step 2: View Monitoring Results and Download Monitoring Artifacts
+
+  After the automated pipeline completes, monitoring outputs are provided as GitHub Actions artifacts.
+  
+- Open the latest **Pipeline Monitoring** workflow 
+- Navigate to the **Summary**
+- Scroll down to the **Artifacts section** in the workflow summary
+- Download the **pipeline-artifact** report
+- Extract the ZIP file locally
+
+  Included files:
+* monitoring_report.md -monitoring summary
+* monitoring_report.txt – plain text report
+* pipeline.log – execution logs
+* streamlit_dashboard.png – dashboard screenshot
+  
+---  
+
 ## Data Sources
 
 - **FDA NDC Database:** https://open.fda.gov/apis/drug/ndc/
